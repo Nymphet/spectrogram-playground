@@ -4,7 +4,7 @@ from scipy.io import wavfile
 import numpy as np
 from matplotlib.ticker import MultipleLocator
 from datetime import datetime
-
+import timeout_decorator
 
 # def draw_spectrogram(samples, sample_rate, nperseg=4096, nfft=4096, noverlap=None, vmax=None, dpi=1200, cmap='gray', filename=None):
 #     # y-axis is note number according to 12tone equal temperament
@@ -65,7 +65,12 @@ def draw_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nfft=4096, n
         plt.savefig(filename)
 
 
-def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nfft=4096, noverlap=None, vmax=None, dpi=1200, cmap='gray', filename=None):
+
+# some bad parametered function calls may be extremely time-consuming and is not acceptable, 
+# so we will set time limits on these function calls
+
+@timeout_decorator.timeout(600)
+def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nfft=4096, noverlap=None, vmax=None, dpi=1200, cmap='gray', filename='spectrogram'):
     # y-axis is MIDI note number according to 12tone equal temperament
 
     print(datetime.now(), "Calculating spectrogram...")
@@ -92,36 +97,7 @@ def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nf
     plt.xlabel('Time [second]')
     plt.colorbar()
 
-    print(datetime.now(), "Writing to file...")
-    if filename is None:
-        plt.savefig('figs/log_specgram_log_nperseg{nperseg}_nfft{nfft}_noverlap{noverlap}.png'.format(
-            nperseg=nperseg, nfft=nfft, noverlap=noverlap), dpi=dpi)
-    else:
-        plt.savefig(filename)
+    print(datetime.now(), "Writing to file ...")
+    plt.savefig('figs/{filename}_log_freq_log_amp_nperseg{nperseg}_nfft{nfft}_noverlap{noverlap}.png'.format(
+            filename=filename, nperseg=nperseg, nfft=nfft, noverlap=noverlap), dpi=dpi)
 
-
-
-wavfile_name = 'wavefiles/sample_10s.wav'
-
-sample_rate, samples = wavfile.read(wavfile_name)
-nperseg = 4096
-nfft = nperseg * 64
-# noverlap = 4096 - 512
-noverlap = nperseg // 2
-
-print('Drawing for', wavfile_name)
-
-start_time = datetime.now()
-
-draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=nperseg, nfft=nfft,
-                            noverlap=noverlap, vmax=None, dpi=300, cmap='nipy_spectral')
-
-# draw_log_spectrogram_12tone(samples, sample_rate, nperseg=nperseg, nfft=nfft,
-#                             noverlap=noverlap, vmax=None, dpi=600, cmap='nipy_spectral')
-
-# draw_spectrogram(
-#     samples, sample_rate, nperseg=nperseg, nfft=nfft, noverlap=noverlap, vmax=None, dpi=1200)
-
-time_elapsed = datetime.now() - start_time
-
-print('Done. Time elapsed (hh:mm:ss.ms) {}'.format(time_elapsed))
