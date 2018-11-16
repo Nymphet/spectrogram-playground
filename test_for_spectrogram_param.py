@@ -20,11 +20,11 @@ sample_rate, samples = wavfile.read(wavfile_name)
 
 from spectrogram2 import draw_log_scale_log_spectrogram_12tone
 
-for i in range(1,17):
+for i in range(10,27):
     nperseg = 2**i
-    for j in range(1, 9):
+    for j in range(0, 9):
         nfft = nperseg * 2**j
-        for k in range(1, 17):
+        for k in range(1, 27):
             noverlap = nperseg - (nperseg // (2**k))
 
             print('Drawing for {filename} with params: nperseg={nperseg}, nfft={nfft}, noverlap={noverlap}'.format(filename=wavfile_name, nperseg=nperseg, nfft=nfft, noverlap=noverlap))

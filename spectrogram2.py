@@ -69,7 +69,7 @@ def draw_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nfft=4096, n
 # some bad parametered function calls may be extremely time-consuming and is not acceptable, 
 # so we will set time limits on these function calls
 
-@timeout_decorator.timeout(600)
+@timeout_decorator.timeout(300)
 def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nfft=4096, noverlap=None, vmax=None, dpi=1200, cmap='gray', filename='spectrogram'):
     # y-axis is MIDI note number according to 12tone equal temperament
 
@@ -85,7 +85,7 @@ def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nf
     # only include common frequencies
     ymin = 40
     ymax = 100
-    fig, ax = plt.subplots(figsize=(40, 5))
+    fig, ax = plt.subplots(figsize=(80, 10))
     plt.axis([times.min(), times.max(), ymin, ymax])
 
     plt.pcolormesh(times, notes, spectrogram, vmin=0, vmax=vmax, cmap=cmap)
@@ -100,4 +100,5 @@ def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nf
     print(datetime.now(), "Writing to file ...")
     plt.savefig('figs/{filename}_log_freq_log_amp_nperseg{nperseg}_nfft{nfft}_noverlap{noverlap}.png'.format(
             filename=filename, nperseg=nperseg, nfft=nfft, noverlap=noverlap), dpi=dpi)
+    plt.close(fig='all')
 
