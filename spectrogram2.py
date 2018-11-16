@@ -99,6 +99,6 @@ def draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=4096, nf
 
     print(datetime.now(), "Writing to file ...")
     plt.savefig('figs/{filename}_log_freq_log_amp_nperseg{nperseg}_nfft{nfft}_noverlap{noverlap}.png'.format(
-            filename=filename, nperseg=nperseg, nfft=nfft, noverlap=noverlap), dpi=dpi)
+            filename=filename, nperseg=nperseg, nfft=nfft, noverlap=noverlap), dpi=dpi, bbox_inches='tight')
     plt.close(fig='all')
 
