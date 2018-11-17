@@ -6,15 +6,6 @@ from matplotlib.ticker import MultipleLocator
 from datetime import datetime
 
 
-
-
-# read a wav file which is a real music file
-
-wavfile_name = 'wavefiles/sample_10s.wav'
-
-sample_rate, samples = wavfile.read(wavfile_name)
-
-
 # I want to see which parameter works best for musical waves, bu apparantly I have
 # no choice but try them all...
 
@@ -24,26 +15,12 @@ for i in range(10,27):
     nperseg = 2**i
     for j in range(0, 9):
         nfft = nperseg * 2**j
+        # default
+        noverlap = nperseg // 8
+        print('python3 test_for_param_single_run.py {nperseg} {nfft} {noverlap}'.format(nperseg=nperseg, nfft=nfft, noverlap=noverlap))
+        # and more params we want to test
         for k in range(1, 27):
             noverlap = nperseg - (nperseg // (2**k))
-
-            print('Drawing for {filename} with params: nperseg={nperseg}, nfft={nfft}, noverlap={noverlap}'.format(filename=wavfile_name, nperseg=nperseg, nfft=nfft, noverlap=noverlap))
-
-            start_time = datetime.now()
-
-            try:
-                draw_log_scale_log_spectrogram_12tone(samples, sample_rate, nperseg=nperseg, nfft=nfft,
-                            noverlap=noverlap, vmax=None, dpi=600, cmap='nipy_spectral', filename='sample_10s')
-            except TimeoutError as e:
-                print("Timed out!")
-            except KeyboardInterrupt as e:
-                print(e)
-                exit(0)
-            except Exception as inst:
-                print('Unexpected Exception happened: ', inst)
-                continue
-            
-            time_elapsed = datetime.now() - start_time
-
-            print('Done. Time elapsed (hh:mm:ss.ms) {}'.format(time_elapsed))
+            print('python3 test_for_param_single_run.py {nperseg} {nfft} {noverlap}'.format(nperseg=nperseg, nfft=nfft, noverlap=noverlap))
+        
 
