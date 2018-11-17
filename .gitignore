@@ -108,3 +108,6 @@ venv.bak/
 
 # do not include all the figs we generated
 figs/
+
+# temp file
+test_param.sh
